@@ -27,8 +27,10 @@ from datetime import datetime, timezone
 import requests
 from eth_hash.auto import keccak
 
-MEZO_RPC = "https://mezo.drpc.org"
-ETH_RPC = "https://eth-mainnet.public.blastapi.io"
+MEZO_RPCS = ["https://mezo.drpc.org", "https://rpc.mezo.org", "https://rpc.test.mezo.org"]
+ETH_RPCS = ["https://eth-mainnet.public.blastapi.io", "https://eth.llamarpc.com"]
+MEZO_RPC = MEZO_RPCS[0]   # chosen on the first successful response
+ETH_RPC = ETH_RPCS[0]
 PROXIES = {"http": "http://127.0.0.1:2080", "https": "http://127.0.0.1:2080"}
 
 # Addresses taken from mezo-org/musd, solidity/artifacts/deployments/mainnet/
@@ -47,6 +49,23 @@ ROOT = pathlib.Path(__file__).parent
 
 
 BLOCK: dict[str, int] = {}   # rpc -> block number, so every read uses one consistent snapshot
+READ_ERRORS: list[str] = []  # reads that failed; empty means everything was read
+RPC_USED: dict[str, str] = {}
+
+
+def pick_rpc(candidates: list[str], label: str) -> str:
+    """First RPC that answers eth_blockNumber. Fails loudly when none is alive."""
+    for url in candidates:
+        try:
+            r = requests.post(url, json={"jsonrpc": "2.0", "id": 1, "method": "eth_blockNumber",
+                                         "params": []}, timeout=(6, 20), proxies=PROXIES)
+            res = (r.json() or {}).get("result")
+            if res:
+                RPC_USED[label] = url
+                return url
+        except Exception:
+            continue
+    raise SystemExit(f"no live RPC for {label}: {candidates}")
 
 
 def block_number(rpc: str) -> int | None:
@@ -69,8 +88,10 @@ def call(rpc: str, to: str, sig: str, args: str = "") -> int | None:
         res = r.json().get("result")
         if res and res != "0x":
             return int(res, 16)
-    except Exception:
+    except Exception as e:
+        READ_ERRORS.append(f"{sig} on {to[:10]}: {type(e).__name__}")
         return None
+    READ_ERRORS.append(f"{sig} on {to[:10]}: empty result")
     return None
 
 
@@ -90,6 +111,10 @@ def balance_of(rpc: str, token: str, holder: str) -> int | None:
 
 
 def gather(blocks: dict[str, int] | None = None) -> dict:
+    global MEZO_RPC, ETH_RPC
+    MEZO_RPC = pick_rpc(MEZO_RPCS, "mezo")
+    ETH_RPC = pick_rpc(ETH_RPCS, "ethereum")
+    READ_ERRORS.clear()
     if blocks:
         BLOCK.update(blocks)
     else:
@@ -151,6 +176,13 @@ def gather(blocks: dict[str, int] | None = None) -> dict:
 
 def main() -> int:
     data = gather()
+    # The main rule: zero supply or zero collateral is a read failure, not a result.
+    if not data["musd_supply_mezo"] or not data["system_collateral_btc"]:
+        print("REFUSED: could not read supply or collateral. This is an RPC failure, not a zero value.")
+        for e in READ_ERRORS[:6]:
+            print("  -", e)
+        print("  RPC:", RPC_USED)
+        return 2
     verdict = "ATTESTED_PARTIAL"
     notes = []
     if data["collateral_to_supply_ratio"] is None:
@@ -182,6 +214,8 @@ def main() -> int:
             "not verified: protocol obligations outside these contracts",
         ],
         "chain": {"mezo_chain_id": 31612, "ethereum_chain_id": 1, "blocks": dict(BLOCK)},
+        "rpc_used": dict(RPC_USED),
+        "read_errors": list(READ_ERRORS),
         "contracts": {"MUSD": MUSD, "TroveManager": TROVE_MANAGER, "PriceFeed": PRICE_FEED,
                       "ActivePool": ACTIVE_POOL, "DefaultPool": DEFAULT_POOL,
                       "BorrowerOperations": BORROWER_OPS, "PCV": PCV,

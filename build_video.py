@@ -255,10 +255,10 @@ def main() -> int:
         wav = BUILD / f"voice{n}.wav"
         dur = tts(spec["speech"], wav)
         total += dur + 0.6
-        print(f"  слайд {n}: кадр + голос {dur:.2f} с")
+        print(f"  slide {n}: frame + voice {dur:.2f} s")
         segments.append((png, wav, dur))
 
-    # каждый сегмент: кадр на всю длительность дорожки + пауза 0.6 с
+    # each segment: the frame held for the whole track plus a 0.6 s pause
     parts = []
     for n, (png, wav, dur) in enumerate(segments, 1):
         seg = BUILD / f"seg{n}.mp4"
@@ -274,7 +274,7 @@ def main() -> int:
     out = ROOT / "MUSD-Proof-pitch.mp4"
     subprocess.run([FFMPEG, "-y", "-f", "concat", "-safe", "0", "-i", str(listing),
                     "-c", "copy", str(out)], check=True, capture_output=True, timeout=300)
-    print(f"видео: {out} · ожидаемая длительность ~{total:.1f} с")
+    print(f"video: {out} · expected duration ~{total:.1f} s")
     return 0
 
 

@@ -1,0 +1,16 @@
+OK       btc_in_protocol_pools: {'ActivePool': 16.627912, 'DefaultPool': 0.0, 'CollSurplusPool': 5.037474, 'GasPool': 0.0, 'StabilityPool': 0.0, 'PCV': 0.0}
+CHANGED  btc_price_usd: was 80787.37 → now 80792.05
+CHANGED  collateral_to_supply_ratio: 0.045563
+CHANGED  collateral_value_usd: was 0.0 → now 1343403.09
+CHANGED  musd_held_by_protocol: {'ActivePool': 0.0, 'DefaultPool': 0.0, 'BorrowerOperations': 0.0, 'PCV': None}
+OK       musd_supply_ethereum: 747785.522982
+CHANGED  musd_supply_mezo: was 0.0 → now 29484766.410059
+OK       pcv_bootstrap_loan_musd: 100000000.0
+OK       pcv_debt_to_pay_musd: 14950860.619271
+CHANGED  system_collateral_btc: was 0.0 → now 16.627912
+OK       system_debt_musd: 17243.150652
+OK       total_btc_in_protocol: 21.665386
+CHANGED  total_btc_value_usd: was 1750289.55 → now 1750390.95
+CHANGED  user_collateral_ratio: was 0.0 → now 77.909375
+CHANGED  user_collateral_ratio_total: was 101.506366 → now 101.512246
+statement_sha256: MISMATCH

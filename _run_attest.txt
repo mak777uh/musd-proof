@@ -1,0 +1,33 @@
+{
+ "musd_supply_mezo": 0.0,
+ "musd_supply_ethereum": 747785.522982,
+ "system_collateral_btc": 0.0,
+ "btc_price_usd": 80787.37,
+ "collateral_value_usd": 0.0,
+ "system_debt_musd": 17243.150592,
+ "pcv_bootstrap_loan_musd": 100000000.0,
+ "pcv_debt_to_pay_musd": 14950860.619271,
+ "user_collateral_ratio": 0.0,
+ "collateral_to_supply_ratio": null,
+ "btc_in_protocol_pools": {
+  "ActivePool": 16.627912,
+  "DefaultPool": 0.0,
+  "CollSurplusPool": 5.037474,
+  "GasPool": 0.0,
+  "StabilityPool": 0.0,
+  "PCV": 0.0
+ },
+ "total_btc_in_protocol": 21.665386,
+ "total_btc_value_usd": 1750289.55,
+ "user_collateral_ratio_total": 101.506366,
+ "musd_held_by_protocol": {
+  "ActivePool": 0.0,
+  "DefaultPool": 0.0,
+  "BorrowerOperations": 0.0,
+  "PCV": 2.890854
+ }
+}
+
+verdict: INCONCLUSIVE
+  · could not read supply or collateral — no conclusion is possible
+statement_sha256: 049dd52e87d004f9cb125b4d9c877f8e23f17fe529edea65dfb3d627ab92202f
