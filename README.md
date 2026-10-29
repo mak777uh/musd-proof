@@ -51,7 +51,9 @@ reproducible: same inputs, same hash, same conclusion — or an honest "inconclu
 | file | what |
 |---|---|
 | `media/MUSD-Proof-deck.pptx` | 7 slides, every number pulled from `RECEIPT.json` |
-| `media/MUSD-Proof-pitch.mp4` | 2-minute pitch (118 s, 1920x1080, narration generated locally) |
+| `media/MUSD-Proof-full.mp4` | **the pitch (115 s)**: the real run first (16 s), then the story |
+| `media/MUSD-Proof-pitch.mp4` | the slides alone (118 s) |
+| `media/MUSD-Proof-terminal.mp4` | the real run alone (16 s) |
 
 Both are regenerated from the receipt by `build_deck.py` and `build_video.py`, so a changed number changes the
 slides — the deck cannot drift away from the data.

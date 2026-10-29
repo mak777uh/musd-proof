@@ -4,13 +4,13 @@
   "musd_supply_mezo": 29484766.410059,
   "musd_supply_ethereum": 747785.522982,
   "system_collateral_btc": 16.627912,
-  "btc_price_usd": 80769.36,
-  "collateral_value_usd": 1343025.8,
-  "system_debt_musd": 17243.15233,
+  "btc_price_usd": 80796.99,
+  "collateral_value_usd": 1343485.19,
+  "system_debt_musd": 17243.153783,
   "pcv_bootstrap_loan_musd": 100000000.0,
   "pcv_debt_to_pay_musd": 14950860.619271,
-  "user_collateral_ratio": 77.887487,
-  "collateral_to_supply_ratio": 0.04555,
+  "user_collateral_ratio": 77.914122,
+  "collateral_to_supply_ratio": 0.045565,
   "btc_in_protocol_pools": {
    "ActivePool": 16.627912,
    "DefaultPool": 0.0,
@@ -20,8 +20,8 @@
    "PCV": 0.0
   },
   "total_btc_in_protocol": 21.665386,
-  "total_btc_value_usd": 1749899.36,
-  "user_collateral_ratio_total": 101.483727,
+  "total_btc_value_usd": 1750497.92,
+  "user_collateral_ratio_total": 101.518431,
   "musd_held_by_protocol": {
    "ActivePool": 0.0,
    "DefaultPool": 0.0,
@@ -31,9 +31,9 @@
  },
  "verdict": "ATTESTED_PARTIAL",
  "notes": [
-  "collateral covers 4.55% of total supply, but the supply includes the PCV bootstrap loan of 100,000,000 MUSD (unpaid: 14,950,861); user debt is over-collateralised",
-  "BTC held by all protocol contracts: 21.665386 (~$1,749,899)",
-  "collateral to user debt: 101.48x"
+  "collateral covers 4.56% of total supply, but the supply includes the PCV bootstrap loan of 100,000,000 MUSD (unpaid: 14,950,861); user debt is over-collateralised",
+  "BTC held by all protocol contracts: 21.665386 (~$1,750,498)",
+  "collateral to user debt: 101.52x"
  ],
  "not_verified": [
   "not verified: where the PCV reserve is actually held (no vault contract was found)",
@@ -46,8 +46,8 @@
   "mezo_chain_id": 31612,
   "ethereum_chain_id": 1,
   "blocks": {
-   "https://mezo.drpc.org": 12858030,
-   "https://eth-mainnet.public.blastapi.io": 26300576
+   "https://mezo.drpc.org": 12858104,
+   "https://eth-mainnet.public.blastapi.io": 26300598
   }
  },
  "rpc_used": {
@@ -68,6 +68,6 @@
   "StabilityPool": "0x73245Eff485aB3AAc1158B3c4d8f4b23797B0e32"
  },
  "command": "python attest.py",
- "generated_utc": "2026-10-29T19:45:50+00:00",
- "statement_sha256": "54c8c141bbce34b3ea05611b7934f9e51ac0ca88581b557e63050cdde927b700"
+ "generated_utc": "2026-10-29T19:50:18+00:00",
+ "statement_sha256": "32fe2f30c960c3eb6483c38fb024ea54e3e8ff84e0b144e89d2ca2ce27598822"
 }
