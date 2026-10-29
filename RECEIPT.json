@@ -4,13 +4,24 @@
   "musd_supply_mezo": 29484766.410059,
   "musd_supply_ethereum": 743702.363849,
   "system_collateral_btc": 16.627912,
-  "btc_price_usd": 80643.37,
-  "collateral_value_usd": 1340930.79,
-  "system_debt_musd": 17243.115597,
+  "btc_price_usd": 80680.68,
+  "collateral_value_usd": 1341551.24,
+  "system_debt_musd": 17243.116504,
   "pcv_bootstrap_loan_musd": 100000000.0,
   "pcv_debt_to_pay_musd": 14950860.619271,
-  "user_collateral_ratio": 77.766155,
-  "collateral_to_supply_ratio": 0.045479,
+  "user_collateral_ratio": 77.802133,
+  "collateral_to_supply_ratio": 0.0455,
+  "btc_in_protocol_pools": {
+   "ActivePool": 16.627912,
+   "DefaultPool": 0.0,
+   "CollSurplusPool": 5.037474,
+   "GasPool": 0.0,
+   "StabilityPool": 0.0,
+   "PCV": 0.0
+  },
+  "total_btc_in_protocol": 21.665386,
+  "total_btc_value_usd": 1747978.08,
+  "user_collateral_ratio_total": 101.372515,
   "musd_held_by_protocol": {
    "ActivePool": 0.0,
    "DefaultPool": 0.0,
@@ -21,7 +32,8 @@
  "verdict": "ATTESTED_PARTIAL",
  "notes": [
   "залог покрывает 4.55% всей эмиссии, но эмиссия включает bootstrap-заём PCV на 100,000,000 MUSD (из него не выплачено 14,950,861); пользовательский долг при этом обеспечен с запасом",
-  "отношение залога к пользовательскому долгу: 77.77×"
+  "BTC во всех контрактах протокола: 21.665386 (≈$1,747,978)",
+  "отношение залога к пользовательскому долгу: 101.37×"
  ],
  "not_verified": [
   "не проверено: где именно хранится резерв PCV (контракт-хранилище не найден)",
@@ -34,8 +46,8 @@
   "mezo_chain_id": 31612,
   "ethereum_chain_id": 1,
   "blocks": {
-   "https://mezo.drpc.org": 12856167,
-   "https://eth-mainnet.public.blastapi.io": 26300021
+   "https://mezo.drpc.org": 12856213,
+   "https://eth-mainnet.public.blastapi.io": 26300034
   }
  },
  "contracts": {
@@ -45,9 +57,12 @@
   "ActivePool": "0x3012c2fe1240e3754e5c200a0946bb0e07474876",
   "DefaultPool": "0xe4b5913c0c82db2efc553b95c0173efb90a07c8b",
   "BorrowerOperations": "0x44b1bac67dDA612a41a58AAf779143B181dEe031",
-  "PCV": "0x391EcC7ffEFc48cff41D0F2Bb36e38b82180B993"
+  "PCV": "0x391EcC7ffEFc48cff41D0F2Bb36e38b82180B993",
+  "CollSurplusPool": "0xBF51807ACb3394B8550f0554FB9098856Ef5F491",
+  "GasPool": "0x3EB418BdBE95b4b9cf465ecfBD8424685ACD1Bc1",
+  "StabilityPool": "0x73245Eff485aB3AAc1158B3c4d8f4b23797B0e32"
  },
  "command": "python attest.py",
- "generated_utc": "2026-10-29T17:53:45+00:00",
- "statement_sha256": "b85d349049e3241252c017c9fafc309c6d03aa12303c24a0864c3c9357957406"
+ "generated_utc": "2026-10-29T17:56:34+00:00",
+ "statement_sha256": "77ad211aa45d8a08b1e87ba221afefa5a9c6e4033b9473dc8b37980a2c38dc1a"
 }

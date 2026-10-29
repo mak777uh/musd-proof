@@ -39,6 +39,9 @@ ACTIVE_POOL = "0x3012c2fe1240e3754e5c200a0946bb0e07474876"
 DEFAULT_POOL = "0xe4b5913c0c82db2efc553b95c0173efb90a07c8b"
 BORROWER_OPS = "0x44b1bac67dDA612a41a58AAf779143B181dEe031"
 PCV = "0x391EcC7ffEFc48cff41D0F2Bb36e38b82180B993"
+COLL_SURPLUS_POOL = "0xBF51807ACb3394B8550f0554FB9098856Ef5F491"
+GAS_POOL = "0x3EB418BdBE95b4b9cf465ecfBD8424685ACD1Bc1"
+STABILITY_POOL = "0x73245Eff485aB3AAc1158B3c4d8f4b23797B0e32"
 
 ROOT = pathlib.Path(__file__).parent
 
@@ -71,6 +74,17 @@ def call(rpc: str, to: str, sig: str, args: str = "") -> int | None:
     return None
 
 
+def native_balance(rpc: str, addr: str) -> int | None:
+    tag = hex(BLOCK[rpc]) if rpc in BLOCK else "latest"
+    try:
+        r = requests.post(rpc, json={"jsonrpc": "2.0", "id": 1, "method": "eth_getBalance",
+                                     "params": [addr, tag]}, timeout=(6, 25), proxies=PROXIES)
+        res = r.json().get("result")
+        return int(res, 16) if res else None
+    except Exception:
+        return None
+
+
 def balance_of(rpc: str, token: str, holder: str) -> int | None:
     return call(rpc, token, "balanceOf(address)", holder[2:].rjust(64, "0"))
 
@@ -90,6 +104,18 @@ def gather(blocks: dict[str, int] | None = None) -> dict:
     debt = call(MEZO_RPC, TROVE_MANAGER, "getEntireSystemDebt()")
     bootstrap_loan = call(MEZO_RPC, PCV, "BOOTSTRAP_LOAN()")
     bootstrap_debt = call(MEZO_RPC, PCV, "debtToPay()")
+
+    pools = {
+        "ActivePool": ACTIVE_POOL,
+        "DefaultPool": DEFAULT_POOL,
+        "CollSurplusPool": COLL_SURPLUS_POOL,
+        "GasPool": GAS_POOL,
+        "StabilityPool": STABILITY_POOL,
+        "PCV": PCV,
+    }
+    btc_in_pools = {name: round((native_balance(MEZO_RPC, addr) or 0) / 1e18, 6)
+                    for name, addr in pools.items()}
+    total_btc = round(sum(btc_in_pools.values()), 6)
 
     protocol_holdings = {}
     for name, addr in (("ActivePool", ACTIVE_POOL), ("DefaultPool", DEFAULT_POOL),
@@ -114,6 +140,10 @@ def gather(blocks: dict[str, int] | None = None) -> dict:
         "pcv_debt_to_pay_musd": round((bootstrap_debt or 0) / 1e18, 6),
         "user_collateral_ratio": (round(coll_usd / ((debt or 0) / 1e18), 6) if debt else None),
         "collateral_to_supply_ratio": round(ratio, 6) if ratio is not None else None,
+        "btc_in_protocol_pools": btc_in_pools,
+        "total_btc_in_protocol": total_btc,
+        "total_btc_value_usd": round(total_btc * btc_usd, 2),
+        "user_collateral_ratio_total": (round((total_btc * btc_usd) / ((debt or 0) / 1e18), 6) if debt else None),
         "musd_held_by_protocol": {k: (round(v / 1e18, 6) if v is not None else None)
                                   for k, v in protocol_holdings.items()},
     }
@@ -133,7 +163,9 @@ def main() -> int:
             f"залог покрывает {data['collateral_to_supply_ratio']*100:.2f}% всей эмиссии, но эмиссия "
             f"включает bootstrap-заём PCV на {boot:,.0f} MUSD (из него не выплачено {left:,.0f}); "
             "пользовательский долг при этом обеспечен с запасом")
-        ucr = data.get("user_collateral_ratio")
+        ucr = data.get("user_collateral_ratio_total")
+        notes.append(f"BTC во всех контрактах протокола: {data['total_btc_in_protocol']:.6f} "
+                     f"(≈${data['total_btc_value_usd']:,.0f})")
         if ucr:
             notes.append(f"отношение залога к пользовательскому долгу: {ucr:.2f}×")
     else:
@@ -154,7 +186,9 @@ def main() -> int:
         "chain": {"mezo_chain_id": 31612, "ethereum_chain_id": 1, "blocks": dict(BLOCK)},
         "contracts": {"MUSD": MUSD, "TroveManager": TROVE_MANAGER, "PriceFeed": PRICE_FEED,
                       "ActivePool": ACTIVE_POOL, "DefaultPool": DEFAULT_POOL,
-                      "BorrowerOperations": BORROWER_OPS, "PCV": PCV},
+                      "BorrowerOperations": BORROWER_OPS, "PCV": PCV,
+                      "CollSurplusPool": COLL_SURPLUS_POOL, "GasPool": GAS_POOL,
+                      "StabilityPool": STABILITY_POOL},
         "command": "python attest.py",
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
