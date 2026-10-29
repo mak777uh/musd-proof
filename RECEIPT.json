@@ -4,10 +4,13 @@
   "musd_supply_mezo": 29484766.410059,
   "musd_supply_ethereum": 743702.363849,
   "system_collateral_btc": 16.627912,
-  "btc_price_usd": 80670.2,
-  "collateral_value_usd": 1341376.98,
-  "system_debt_musd": 17243.114914,
-  "collateral_to_supply_ratio": 0.045494,
+  "btc_price_usd": 80643.37,
+  "collateral_value_usd": 1340930.79,
+  "system_debt_musd": 17243.115597,
+  "pcv_bootstrap_loan_musd": 100000000.0,
+  "pcv_debt_to_pay_musd": 14950860.619271,
+  "user_collateral_ratio": 77.766155,
+  "collateral_to_supply_ratio": 0.045479,
   "musd_held_by_protocol": {
    "ActivePool": 0.0,
    "DefaultPool": 0.0,
@@ -17,10 +20,12 @@
  },
  "verdict": "ATTESTED_PARTIAL",
  "notes": [
-  "залог по видимым контрактам меньше эмиссии; это НЕ доказывает недостаточную обеспеченность, пока не найден контракт, где лежит резерв"
+  "залог покрывает 4.55% всей эмиссии, но эмиссия включает bootstrap-заём PCV на 100,000,000 MUSD (из него не выплачено 14,950,861); пользовательский долг при этом обеспечен с запасом",
+  "отношение залога к пользовательскому долгу: 77.77×"
  ],
  "not_verified": [
   "не проверено: где именно хранится резерв PCV (контракт-хранилище не найден)",
+  "bootstrap-заём PCV — это долг протокола перед собой, а не BTC в тройвах",
   "не проверено: обеспечение выпуска, сделанного не под заблокированный BTC",
   "не проверено: состав пула Curve на Ethereum и его спред",
   "не проверено: обязательства протокола вне этих контрактов"
@@ -29,8 +34,8 @@
   "mezo_chain_id": 31612,
   "ethereum_chain_id": 1,
   "blocks": {
-   "https://mezo.drpc.org": 12856132,
-   "https://eth-mainnet.public.blastapi.io": 26300010
+   "https://mezo.drpc.org": 12856167,
+   "https://eth-mainnet.public.blastapi.io": 26300021
   }
  },
  "contracts": {
@@ -43,6 +48,6 @@
   "PCV": "0x391EcC7ffEFc48cff41D0F2Bb36e38b82180B993"
  },
  "command": "python attest.py",
- "generated_utc": "2026-10-29T17:51:38+00:00",
- "statement_sha256": "07007157b8e841c5da3befe8aa8877af89af95457298043b03ee8940ce6a3347"
+ "generated_utc": "2026-10-29T17:53:45+00:00",
+ "statement_sha256": "b85d349049e3241252c017c9fafc309c6d03aa12303c24a0864c3c9357957406"
 }

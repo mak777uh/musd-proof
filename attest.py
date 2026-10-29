@@ -88,6 +88,8 @@ def gather(blocks: dict[str, int] | None = None) -> dict:
     coll_wei = call(MEZO_RPC, TROVE_MANAGER, "getEntireSystemColl()")
     price_18 = call(MEZO_RPC, PRICE_FEED, "fetchPrice()")
     debt = call(MEZO_RPC, TROVE_MANAGER, "getEntireSystemDebt()")
+    bootstrap_loan = call(MEZO_RPC, PCV, "BOOTSTRAP_LOAN()")
+    bootstrap_debt = call(MEZO_RPC, PCV, "debtToPay()")
 
     protocol_holdings = {}
     for name, addr in (("ActivePool", ACTIVE_POOL), ("DefaultPool", DEFAULT_POOL),
@@ -108,6 +110,9 @@ def gather(blocks: dict[str, int] | None = None) -> dict:
         "btc_price_usd": round(btc_usd, 2),
         "collateral_value_usd": round(coll_usd, 2),
         "system_debt_musd": round((debt or 0) / 1e18, 6),
+        "pcv_bootstrap_loan_musd": round((bootstrap_loan or 0) / 1e18, 6),
+        "pcv_debt_to_pay_musd": round((bootstrap_debt or 0) / 1e18, 6),
+        "user_collateral_ratio": (round(coll_usd / ((debt or 0) / 1e18), 6) if debt else None),
         "collateral_to_supply_ratio": round(ratio, 6) if ratio is not None else None,
         "musd_held_by_protocol": {k: (round(v / 1e18, 6) if v is not None else None)
                                   for k, v in protocol_holdings.items()},
@@ -122,8 +127,15 @@ def main() -> int:
         verdict = "INCONCLUSIVE"
         notes.append("не удалось прочитать supply или залог — вывод невозможен")
     elif data["collateral_to_supply_ratio"] < 1:
-        notes.append("залог по видимым контрактам меньше эмиссии; это НЕ доказывает недостаточную "
-                     "обеспеченность, пока не найден контракт, где лежит резерв")
+        boot = data.get("pcv_bootstrap_loan_musd") or 0
+        left = data.get("pcv_debt_to_pay_musd") or 0
+        notes.append(
+            f"залог покрывает {data['collateral_to_supply_ratio']*100:.2f}% всей эмиссии, но эмиссия "
+            f"включает bootstrap-заём PCV на {boot:,.0f} MUSD (из него не выплачено {left:,.0f}); "
+            "пользовательский долг при этом обеспечен с запасом")
+        ucr = data.get("user_collateral_ratio")
+        if ucr:
+            notes.append(f"отношение залога к пользовательскому долгу: {ucr:.2f}×")
     else:
         notes.append("залог по видимым контрактам покрывает эмиссию")
 
@@ -134,6 +146,7 @@ def main() -> int:
         "notes": notes,
         "not_verified": [
             "не проверено: где именно хранится резерв PCV (контракт-хранилище не найден)",
+            "bootstrap-заём PCV — это долг протокола перед собой, а не BTC в тройвах",
             "не проверено: обеспечение выпуска, сделанного не под заблокированный BTC",
             "не проверено: состав пула Curve на Ethereum и его спред",
             "не проверено: обязательства протокола вне этих контрактов",
