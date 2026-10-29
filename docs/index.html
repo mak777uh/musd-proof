@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MUSD Proof — reproducible attestation</title>
+<style>
+ body{font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+ h1{font-size:1.7rem;margin:0 0 .3rem} .sub{color:#666;margin:0 0 2rem}
+ table{border-collapse:collapse;width:100%;margin:.5rem 0 1.5rem;font-size:.95rem}
+ th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid #8883}
+ td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+ code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;word-break:break-all}
+ .verdict{display:inline-block;padding:.25rem .6rem;border-radius:.4rem;background:#f5c54233;border:1px solid #f5c54266}
+ ul{padding-left:1.1rem} footer{margin-top:2.5rem;color:#666;font-size:.9rem}
+</style></head><body>
+<h1>MUSD Proof</h1>
+<p class="sub">What the MUSD contracts actually return — and the command to check it yourself.</p>
+
+<p>Verdict: <span class="verdict">ATTESTED_PARTIAL</span></p>
+<p><small>Pinned state: chain mezo.drpc.org: block 12856213, chain eth-mainnet.public.blast: block 26300034</small></p>
+
+<h2>Numbers</h2>
+<table>
+<tr><td>MUSD supply on Mezo</td><td>29,484,766.410059</td></tr><tr><td>MUSD supply on Ethereum</td><td>743,702.363849</td></tr><tr><td>BTC held by protocol pools</td><td>21.665386 BTC</td></tr><tr><td>BTC price (protocol feed)</td><td>$80,680.68</td></tr><tr><td>Collateral value</td><td>$1,747,978.08</td></tr><tr><td>User debt (troves)</td><td>17,243.116504 MUSD</td></tr><tr><td>Collateral / user debt</td><td>101.372515x</td></tr><tr><td>Collateral / total supply</td><td>4.55%</td></tr><tr><td>PCV bootstrap loan</td><td>100,000,000 MUSD</td></tr><tr><td>of which unpaid</td><td>14,950,860.619271 MUSD</td></tr>
+</table>
+
+<h2>BTC by pool</h2>
+<table>
+<tr><td>ActivePool</td><td>16.627912 BTC</td></tr><tr><td>DefaultPool</td><td>0 BTC</td></tr><tr><td>CollSurplusPool</td><td>5.037474 BTC</td></tr><tr><td>GasPool</td><td>0 BTC</td></tr><tr><td>StabilityPool</td><td>0 BTC</td></tr><tr><td>PCV</td><td>0 BTC</td></tr>
+</table>
+
+<h2>Statement hash</h2>
+<p><code>77ad211aa45d8a08b1e87ba221afefa5a9c6e4033b9473dc8b37980a2c38dc1a</code></p>
+<p>Change any number above and this hash changes. <code>python verify_receipt.py</code> re-reads the same
+blocks and prints the difference instead of hiding it.</p>
+
+<h2>What this does not claim</h2>
+<ul><li>не проверено: где именно хранится резерв PCV (контракт-хранилище не найден)</li><li>bootstrap-заём PCV — это долг протокола перед собой, а не BTC в тройвах</li><li>не проверено: обеспечение выпуска, сделанного не под заблокированный BTC</li><li>не проверено: состав пула Curve на Ethereum и его спред</li><li>не проверено: обязательства протокола вне этих контрактов</li></ul>
+
+<h2>Run it</h2>
+<pre><code>git clone https://github.com/mak777uh/musd-proof
+cd musd-proof
+python attest.py
+python verify_receipt.py</code></pre>
+
+<footer>No cookies, no analytics. Generated 2026-10-29T17:56:34+00:00 from RECEIPT.json.</footer>
+</body></html>
