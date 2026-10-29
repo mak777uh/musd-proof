@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-r"""verify_receipt.py — перечитать цепь и сравнить с квитанцией.
+r"""verify_receipt.py — re-read the chain and compare against the receipt.
 
-Если числа разошлись — скрипт печатает, какие именно. Если совпали — печатает statement_sha256,
-который должен совпасть с записанным.
+If numbers drifted, the script prints which ones. If they match, it prints statement_sha256, which
+must equal the stored one.
 """
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ def main() -> int:
             elif was == cur:
                 print(f"OK       {k}: {cur}")
             else:
-                print(f"CHANGED  {k}: был {was} → сейчас {cur}")
+                print(f"CHANGED  {k}: was {was} → now {cur}")
                 ok = False
         else:
             same = was == cur
@@ -36,7 +36,7 @@ def main() -> int:
             ok = False if not same else ok
     core = {k: now[k] for k in sorted(now)}
     h = hashlib.sha256(json.dumps(core, sort_keys=True).encode()).hexdigest()
-    print(f"statement_sha256: {'совпал' if h == rec['statement_sha256'] else 'НЕ СОВПАЛ'}")
+    print(f"statement_sha256: {'matches' if h == rec['statement_sha256'] else 'MISMATCH'}")
     return 0 if ok else 1
 
 

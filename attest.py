@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-r"""attest.py — MUSD Proof: reproducible attestation of what the numbers actually are.
+r"""attest.py — MUSD Proof: a reproducible attestation of what the numbers actually are.
 
 What it does (read-only, no keys, no transactions):
 
@@ -46,7 +46,7 @@ STABILITY_POOL = "0x73245Eff485aB3AAc1158B3c4d8f4b23797B0e32"
 ROOT = pathlib.Path(__file__).parent
 
 
-BLOCK: dict[str, int] = {}   # rpc -> block number, чтобы все чтения были на одном снимке
+BLOCK: dict[str, int] = {}   # rpc -> block number, so every read uses one consistent snapshot
 
 
 def block_number(rpc: str) -> int | None:
@@ -155,21 +155,19 @@ def main() -> int:
     notes = []
     if data["collateral_to_supply_ratio"] is None:
         verdict = "INCONCLUSIVE"
-        notes.append("не удалось прочитать supply или залог — вывод невозможен")
+        notes.append("could not read supply or collateral — no conclusion is possible")
     elif data["collateral_to_supply_ratio"] < 1:
         boot = data.get("pcv_bootstrap_loan_musd") or 0
         left = data.get("pcv_debt_to_pay_musd") or 0
         notes.append(
-            f"залог покрывает {data['collateral_to_supply_ratio']*100:.2f}% всей эмиссии, но эмиссия "
-            f"включает bootstrap-заём PCV на {boot:,.0f} MUSD (из него не выплачено {left:,.0f}); "
-            "пользовательский долг при этом обеспечен с запасом")
+            f"collateral covers {data['collateral_to_supply_ratio']*100:.2f}% of total supply, but the supply "
+            f"includes the PCV bootstrap loan of {boot:,.0f} MUSD (unpaid: {left:,.0f}); user debt is "
+            "over-collateralised")
+        notes.append(f"BTC held by all protocol contracts: {data['total_btc_in_protocol']:.6f} "
+                     f"(~${data['total_btc_value_usd']:,.0f})")
         ucr = data.get("user_collateral_ratio_total")
-        notes.append(f"BTC во всех контрактах протокола: {data['total_btc_in_protocol']:.6f} "
-                     f"(≈${data['total_btc_value_usd']:,.0f})")
         if ucr:
-            notes.append(f"отношение залога к пользовательскому долгу: {ucr:.2f}×")
-    else:
-        notes.append("залог по видимым контрактам покрывает эмиссию")
+            notes.append(f"collateral to user debt: {ucr:.2f}x")
 
     receipt = {
         "claim": "the numbers below are what the listed contracts return at the listed moment",
@@ -177,11 +175,11 @@ def main() -> int:
         "verdict": verdict,
         "notes": notes,
         "not_verified": [
-            "не проверено: где именно хранится резерв PCV (контракт-хранилище не найден)",
-            "bootstrap-заём PCV — это долг протокола перед собой, а не BTC в тройвах",
-            "не проверено: обеспечение выпуска, сделанного не под заблокированный BTC",
-            "не проверено: состав пула Curve на Ethereum и его спред",
-            "не проверено: обязательства протокола вне этих контрактов",
+            "not verified: where the PCV reserve is actually held (no vault contract was found)",
+            "the PCV bootstrap loan is a protocol obligation, not BTC locked in troves",
+            "not verified: how the supply that was not minted against locked BTC is backed",
+            "not verified: the composition and spread of the Curve pool on Ethereum",
+            "not verified: protocol obligations outside these contracts",
         ],
         "chain": {"mezo_chain_id": 31612, "ethereum_chain_id": 1, "blocks": dict(BLOCK)},
         "contracts": {"MUSD": MUSD, "TroveManager": TROVE_MANAGER, "PriceFeed": PRICE_FEED,

@@ -2,15 +2,15 @@
  "claim": "the numbers below are what the listed contracts return at the listed moment",
  "inputs": {
   "musd_supply_mezo": 29484766.410059,
-  "musd_supply_ethereum": 743702.363849,
+  "musd_supply_ethereum": 747785.522982,
   "system_collateral_btc": 16.627912,
-  "btc_price_usd": 80680.68,
-  "collateral_value_usd": 1341551.24,
-  "system_debt_musd": 17243.116504,
+  "btc_price_usd": 80579.91,
+  "collateral_value_usd": 1339875.64,
+  "system_debt_musd": 17243.129353,
   "pcv_bootstrap_loan_musd": 100000000.0,
   "pcv_debt_to_pay_musd": 14950860.619271,
-  "user_collateral_ratio": 77.802133,
-  "collateral_to_supply_ratio": 0.0455,
+  "user_collateral_ratio": 77.7049,
+  "collateral_to_supply_ratio": 0.045443,
   "btc_in_protocol_pools": {
    "ActivePool": 16.627912,
    "DefaultPool": 0.0,
@@ -20,8 +20,8 @@
    "PCV": 0.0
   },
   "total_btc_in_protocol": 21.665386,
-  "total_btc_value_usd": 1747978.08,
-  "user_collateral_ratio_total": 101.372515,
+  "total_btc_value_usd": 1745794.85,
+  "user_collateral_ratio_total": 101.245825,
   "musd_held_by_protocol": {
    "ActivePool": 0.0,
    "DefaultPool": 0.0,
@@ -31,23 +31,23 @@
  },
  "verdict": "ATTESTED_PARTIAL",
  "notes": [
-  "залог покрывает 4.55% всей эмиссии, но эмиссия включает bootstrap-заём PCV на 100,000,000 MUSD (из него не выплачено 14,950,861); пользовательский долг при этом обеспечен с запасом",
-  "BTC во всех контрактах протокола: 21.665386 (≈$1,747,978)",
-  "отношение залога к пользовательскому долгу: 101.37×"
+  "collateral covers 4.54% of total supply, but the supply includes the PCV bootstrap loan of 100,000,000 MUSD (unpaid: 14,950,861); user debt is over-collateralised",
+  "BTC held by all protocol contracts: 21.665386 (~$1,745,795)",
+  "collateral to user debt: 101.25x"
  ],
  "not_verified": [
-  "не проверено: где именно хранится резерв PCV (контракт-хранилище не найден)",
-  "bootstrap-заём PCV — это долг протокола перед собой, а не BTC в тройвах",
-  "не проверено: обеспечение выпуска, сделанного не под заблокированный BTC",
-  "не проверено: состав пула Curve на Ethereum и его спред",
-  "не проверено: обязательства протокола вне этих контрактов"
+  "not verified: where the PCV reserve is actually held (no vault contract was found)",
+  "the PCV bootstrap loan is a protocol obligation, not BTC locked in troves",
+  "not verified: how the supply that was not minted against locked BTC is backed",
+  "not verified: the composition and spread of the Curve pool on Ethereum",
+  "not verified: protocol obligations outside these contracts"
  ],
  "chain": {
   "mezo_chain_id": 31612,
   "ethereum_chain_id": 1,
   "blocks": {
-   "https://mezo.drpc.org": 12856213,
-   "https://eth-mainnet.public.blastapi.io": 26300034
+   "https://mezo.drpc.org": 12856865,
+   "https://eth-mainnet.public.blastapi.io": 26300228
   }
  },
  "contracts": {
@@ -63,6 +63,6 @@
   "StabilityPool": "0x73245Eff485aB3AAc1158B3c4d8f4b23797B0e32"
  },
  "command": "python attest.py",
- "generated_utc": "2026-10-29T17:56:34+00:00",
- "statement_sha256": "77ad211aa45d8a08b1e87ba221afefa5a9c6e4033b9473dc8b37980a2c38dc1a"
+ "generated_utc": "2026-10-29T18:35:48+00:00",
+ "statement_sha256": "01d32404e733b3fc7d61f2dfffb39fd4c59536ed21c66bc181523845df3a37b0"
 }

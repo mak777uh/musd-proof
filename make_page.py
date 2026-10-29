@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-r"""make_page.py — собрать статическую страницу-демо из RECEIPT.json.
+r"""make_page.py — build a static demo page from RECEIPT.json.
 
-Страница не «рассказывает», а показывает: те же числа, что в квитанции, и команду, которой их можно
-перепроверить. Никакой аналитики, никаких куки.
+The page does not narrate: it shows the same numbers as the receipt and the command that re-checks them.
+No analytics, no cookies.
 
     python make_page.py   # -> docs/index.html
 """
@@ -87,4 +87,4 @@ python verify_receipt.py</code></pre>
 </body></html>
 """
 (ROOT / "docs" / "index.html").write_text(html, encoding="utf-8")
-print("страница собрана: docs/index.html")
+print("page built: docs/index.html")
