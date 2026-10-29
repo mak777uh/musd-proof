@@ -1,0 +1,48 @@
+{
+ "claim": "the numbers below are what the listed contracts return at the listed moment",
+ "inputs": {
+  "musd_supply_mezo": 29484766.410059,
+  "musd_supply_ethereum": 743702.363849,
+  "system_collateral_btc": 16.627912,
+  "btc_price_usd": 80670.2,
+  "collateral_value_usd": 1341376.98,
+  "system_debt_musd": 17243.114914,
+  "collateral_to_supply_ratio": 0.045494,
+  "musd_held_by_protocol": {
+   "ActivePool": 0.0,
+   "DefaultPool": 0.0,
+   "BorrowerOperations": 0.0,
+   "PCV": 2.890854
+  }
+ },
+ "verdict": "ATTESTED_PARTIAL",
+ "notes": [
+  "залог по видимым контрактам меньше эмиссии; это НЕ доказывает недостаточную обеспеченность, пока не найден контракт, где лежит резерв"
+ ],
+ "not_verified": [
+  "не проверено: где именно хранится резерв PCV (контракт-хранилище не найден)",
+  "не проверено: обеспечение выпуска, сделанного не под заблокированный BTC",
+  "не проверено: состав пула Curve на Ethereum и его спред",
+  "не проверено: обязательства протокола вне этих контрактов"
+ ],
+ "chain": {
+  "mezo_chain_id": 31612,
+  "ethereum_chain_id": 1,
+  "blocks": {
+   "https://mezo.drpc.org": 12856132,
+   "https://eth-mainnet.public.blastapi.io": 26300010
+  }
+ },
+ "contracts": {
+  "MUSD": "0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186",
+  "TroveManager": "0x94AfB503dBca74aC3E4929BACEeDfCe19B93c193",
+  "PriceFeed": "0xc5ac5a8892230e0a3e1c473881a2de7353ffca88",
+  "ActivePool": "0x3012c2fe1240e3754e5c200a0946bb0e07474876",
+  "DefaultPool": "0xe4b5913c0c82db2efc553b95c0173efb90a07c8b",
+  "BorrowerOperations": "0x44b1bac67dDA612a41a58AAf779143B181dEe031",
+  "PCV": "0x391EcC7ffEFc48cff41D0F2Bb36e38b82180B993"
+ },
+ "command": "python attest.py",
+ "generated_utc": "2026-10-29T17:51:38+00:00",
+ "statement_sha256": "07007157b8e841c5da3befe8aa8877af89af95457298043b03ee8940ce6a3347"
+}
