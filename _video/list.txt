@@ -1,0 +1,7 @@
+file 'C:/111/work/musd-proof/_video/seg1.mp4'
+file 'C:/111/work/musd-proof/_video/seg2.mp4'
+file 'C:/111/work/musd-proof/_video/seg3.mp4'
+file 'C:/111/work/musd-proof/_video/seg4.mp4'
+file 'C:/111/work/musd-proof/_video/seg5.mp4'
+file 'C:/111/work/musd-proof/_video/seg6.mp4'
+file 'C:/111/work/musd-proof/_video/seg7.mp4'

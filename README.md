@@ -45,3 +45,13 @@ That is the point: a claim a reviewer can re-run, with its own limits printed ne
 MUSD's core promise is that it is backed by Bitcoin. Today a third party cannot check that promise with one
 command, and the numbers are spread across two chains and several contracts. This tool makes the state
 reproducible: same inputs, same hash, same conclusion — or an honest "inconclusive".
+
+## Deck and pitch
+
+| file | what |
+|---|---|
+| `media/MUSD-Proof-deck.pptx` | 7 slides, every number pulled from `RECEIPT.json` |
+| `media/MUSD-Proof-pitch.mp4` | 2-minute pitch (118 s, 1920x1080, narration generated locally) |
+
+Both are regenerated from the receipt by `build_deck.py` and `build_video.py`, so a changed number changes the
+slides — the deck cannot drift away from the data.
